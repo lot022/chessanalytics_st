@@ -180,7 +180,7 @@ Generates a plot showing the statistics of the last games played.
 To display info st.code() is used (for visual effects) but even if your opponent name is "print(chess)" it will not affect the plot at all, except
 looking slightly different. The chart itself looks like this:
 
-![all text](plots_png/gametab1.png)
+![all text](https://github.com/lot022/chessanalytics_st/blob/main/plots_png/gametab1.png)
 
 
 # Heatmaps and graphical representation of the board.
@@ -274,11 +274,11 @@ This is a sample heatmap of king_square_captures() with default params (colorsca
 
 Here is the same funcion but without showscale and with colorscale set to 'plotly3'. Note that setting off showscale makes heatmap look more like a rect than square and less readable. 
 
-![all_text](plots_png/plot2.png)
+![all_text](https://github.com/lot022/chessanalytics_st/blob/main/plots_png/plot2.png)
 
 Here you can see how does the heatmap look without the title.
 
-![all_text](plots_png/plot3.png)
+![all_text](https://github.com/lot022/chessanalytics_st/blob/main/plots_png/plot3.png)
 
 
 # TIPS AND TRICKS.
