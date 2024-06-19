@@ -1,4 +1,4 @@
-# chessanalytics-st
+# chessanalytics_st
 
 Graphical representation of functions from chessanalytics designed for Streamlit apps.
 
