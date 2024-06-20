@@ -261,8 +261,6 @@ class CAST:
 
         st.plotly_chart(fig)
 
-        st.metric('kotki', 12)
-
 
     def WDL_accurate_elo(self, elo, colors: list = ['green', 'gray', 'red'], title: bool = True):
         """
@@ -391,6 +389,77 @@ class CAST:
 
 
 
+    def WDL_gametype(self, plot='pie', colors: list = ['green', 'gray', 'red'], title: str = "Win/Draw/Loss stats by game type", 
+                     xaxis_name: str = 'Game type', yaxis_name: str = 'Number of games', plot_height: int = 700, plot_hole : float = 0.3):
+        '''
+        Generates a pie chart or dataframe showing the win/draw/loss statistics by game type.
+
+        Params:
+        - plot (str): The type of chart to display. Default is 'pie'. Options are 'pie', 'bar' or 'df'.
+        - colors (list): The colors for the pie chart. Default is ['green', 'gray', 'red'].
+        - title (str): The title of the chart. Default is 'Win/Draw/Loss stats by game type'.
+        - xaxis_name (str): The label for the x-axis. Default is 'Game type'.
+        - yaxis_name (str): The label for the y-axis. Default is 'Number of games'.
+        - plot_height (int): The height of the chart in pixels. Default is 700.
+        - plot_hole (float): The size of the hole in the center of the pie chart. Default is 0.3.
+        
+        '''
+
+        gmtp = self.ca.WDL_gametype()
+
+        idx = ['Win', 'Draw', 'Loss']
+
+        fig = go.Figure()
+
+        if plot=='df':
+            st.dataframe(gmtp)
+
+        elif plot=='bar':
+
+            fig = go.Figure()
+
+            colorz = colors
+
+            for key, value in gmtp.items():
+                for i in range(len(value)):
+                    fig.add_trace(go.Bar(
+                        x=[key],
+                        y=[value[i]],
+                        marker_color=colorz[i],
+                        name=f' {idx[i]}'
+                    ))
+
+            fig.update_layout(
+                title=f'{title}',
+                xaxis_title=f'{xaxis_name}',
+                yaxis_title=f'{yaxis_name}',
+                barmode='stack',
+                showlegend=False
+            )
+
+            st.plotly_chart(fig)
+
+        elif plot=='pie':
+
+            for i, (key, values) in enumerate(gmtp.items()):
+                fig.add_trace(go.Pie(
+                    labels=['Win', 'Draw', 'Loss'],
+                    values=values,
+                    name=key,
+                    hole=plot_hole,
+                ).update(domain=dict(row=i // 2, column=i % 2), title=key))
+
+            fig.update_layout(
+                grid=dict(rows=2, columns=2),
+                title=f'{title}',
+                height=plot_height
+            )
+
+            st.plotly_chart(fig)
+            
+
+
+
 
                                                         ##########          Time Related functions          ##########
 
@@ -430,7 +499,6 @@ class CAST:
         )
 
         st.plotly_chart(fig)
-        st.write(sum(fcj.values()))
 
 
     
@@ -902,6 +970,8 @@ class CAST:
                         line = next(plik)
 
                     d[f'Game {i}'].append(line.split('"')[1])
+
+        d = dict(list(d.items())[:5])
 
 
         if plot_type=='df':
