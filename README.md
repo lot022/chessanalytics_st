@@ -102,6 +102,20 @@ Generates a pie chart visualization of the win/draw/loss statistics by time cont
         - plot_height (int): The height of the chart in pixels. Default is 700.
         - plot_hole (float): The size of the hole in the center of the pie chart. Default is 0.3.
 
+### WDL_gametype
+
+Generates a pie chart or dataframe showing the win/draw/loss statistics by game type.
+
+        Params:
+        - plot (str): The type of chart to display. Default is 'pie'. Options are 'pie', 'bar' or 'df'.
+        - colors (list): The colors for the pie chart. Default is ['green', 'gray', 'red'].
+        - title (str): The title of the chart. Default is 'Win/Draw/Loss stats by game type'.
+        - xaxis_name (str): The label for the x-axis. Default is 'Game type'.
+        - yaxis_name (str): The label for the y-axis. Default is 'Number of games'.
+        - plot_height (int): The height of the chart in pixels. Default is 700.
+        - plot_hole (float): The size of the hole in the center of the pie chart. Default is 0.3.
+        
+
 
 
 # Time related Functions.
