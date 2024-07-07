@@ -99,8 +99,10 @@ Generates a pie chart visualization of the win/draw/loss statistics by time cont
 
         Parameters:
         - title (str): The title of the chart. Default is 'Win/Draw/Loss stats by time control'.
-        - plot_height (int): The height of the chart in pixels. Default is 700.
-        - plot_hole (float): The size of the hole in the center of the pie chart. Default is 0.3.
+        - colors (list): The colors for the bar chart. Default is ['green', 'gray', 'red'].
+        - xaxis_name (str): The label for the x-axis. Default is 'Time control'.
+        - yaxis_name (str): The label for the y-axis. Default is 'Number of games'.
+
 
 ### WDL_gametype
 
@@ -200,18 +202,6 @@ looking slightly different. The chart itself looks like this:
 
 # Heatmaps and graphical representation of the board.
 
-
-### heatmap1
-
-Generates a heatmap visualisation of the squares where the moves were made.
-
-        Params:
-        - counter (dict): A dictionary containing the count of moves made on each square.
-        - plot_colorscale (str): The colorscale to use for the heatmap. Default is 'Viridis'.
-        - title (str): The title of the heatmap. Default is 'Moves heatmap'.'
-        - plot_showscale (bool): Whether to show the color scale. Default is True.
-
-
 ### rook_moves
 
 Generates a heatmap of the squares where the Rook moves were made.
@@ -282,12 +272,7 @@ Generates a heatmap of the squares where the captures were made.
 
 # How does heatmap plots look?
 
-This is a sample heatmap of king_square_captures() with default params (colorscale set to 'plasma', showscale set to True).
-
-(chessnalytics/plots_png/plot1.png)
-
-
-Here is the same funcion but without showscale and with colorscale set to 'plotly3'. Note that setting off showscale makes heatmap look more like a rect than square and less readable. 
+This is a sample heatmap of king_square_captures() with default params (colorscale set to 'plotly3', showscale set to False). Note that setting off showscale makes heatmap look more like a rect than square and less readable. 
 
 ![image](https://github.com/lot022/chessanalytics_st/assets/171599696/a3971af4-3a9f-4dc6-8f35-3d54d23f96eb)
 
@@ -304,6 +289,4 @@ Here you can see how does the heatmap look without the title.
 2. If you do not like how particular funcion look but want to plot it using Streamlit, just call the function from chessanalytics library and plot it 
 yourself. 
 
-3. I have made a cheatsheet with (almost) all the functions and their possibilites. To see which type of plot in the same func is better, check it out here: will add soon :)
-
-4. I have made a sample Streamlit app to show how can it possibly look. If you are looking for inspiration you can see it here: will add soon :)
+3. You can check output of almost all of the functions available in the lib here:
