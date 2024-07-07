@@ -8,7 +8,7 @@ import pandas as pd
 
 class CAST:
 
-    def __init__(self, file, name):
+    def __init__(self, file : str, name : str):
         self.file = file
         self.name = name
         self.ca = CA(self.file, self.name)
@@ -291,7 +291,8 @@ class CAST:
             st.metric(label="Losses", value=wdl_acelo[2], delta=wdl_acelo[2], delta_color='inverse')
 
     
-    def WDL_elo(self, plot='bar', colors: list = ['green', 'gray', 'red'], title: str = "Win/Draw/Loss stats by opponent's elo", xaxis_name: str = 'elo', yaxis_name: str = 'Number of games'):
+    def WDL_elo(self, plot='bar', colors: list = ['green', 'gray', 'red'], title: str = "Win/Draw/Loss stats by opponent's elo", 
+                xaxis_name: str = 'elo', yaxis_name: str = 'Number of games'):
         """
         Generates a bar plot or dataframe showing the win/draw/loss statistics by opponent's elo.
 
@@ -347,15 +348,17 @@ class CAST:
 
   
 
-    def WDL_time_control(self, title: str = 'Win/Draw/Loss stats by time control', plot_height: int = 700, plot_hole : float = 0.3):
+    def WDL_time_control(self, title: str = 'Win/Draw/Loss stats by time control', colors : list = ['green', 'gray', 'red'], 
+                         xaxis_name: str = 'Time control', yaxis_name: str = 'Number of games'):
 
         """
         Generates a pie chart visualization of the win/draw/loss statistics by time control.
 
         Parameters:
         - title (str): The title of the chart. Default is 'Win/Draw/Loss stats by time control'.
-        - plot_height (int): The height of the chart in pixels. Default is 700.
-        - plot_hole (float): The size of the hole in the center of the pie chart. Default is 0.3.
+        - colors (list): The colors for the bar chart. Default is ['green', 'gray', 'red'].
+        - xaxis_name (str): The label for the x-axis. Default is 'Time control'.
+        - yaxis_name (str): The label for the y-axis. Default is 'Number of games'.
 
 
         This function retrieves the win/draw/loss statistics by time control from the 'ca' object and generates a pie chart
@@ -366,24 +369,31 @@ class CAST:
         ca.WDL_time_control(title='Win/Draw/Loss by Time Control', plot_height=800, plot_hole=0.4)
         """
 
+        idx = ['win', 'draw', 'loss']
 
-        xyz = self.ca.WDL_time_control()
+
+        data = self.ca.WDL_time_control()
 
         fig = go.Figure()
 
-        for i, (key, values) in enumerate(xyz.items()):
-            fig.add_trace(go.Pie(
-                labels=['Win', 'Draw', 'Loss'],
-                values=values,
-                name=key,
-                hole=plot_hole,
-            ).update(domain=dict(row=i // 2, column=i % 2), title=key))
+        colorz = colors
+
+        for key, value in data.items():
+            for i in range(len(value)):
+                fig.add_trace(go.Bar(
+                    x=[key],
+                    y=[value[i]],
+                        marker_color=colorz[i],
+                        name=f' {idx[i]}'
+                    ))
 
         fig.update_layout(
-            grid=dict(rows=2, columns=2),
             title=f'{title}',
-            height=plot_height
-        )
+            xaxis_title=f'{xaxis_name}',
+            yaxis_title=f'{yaxis_name}',
+            barmode='stack',
+            showlegend=False
+            )
 
         st.plotly_chart(fig)
 
@@ -631,12 +641,11 @@ class CAST:
         klucze = list(sorted(bulprog.keys()))
         wartosci = list(bulprog.values())
 
-        # Tworzenie wykresu
+
         fig = go.Figure()
 
         fig.add_trace(go.Scatter(x=klucze, y=wartosci, mode='lines+markers', name='Wartości'))
 
-        # Dodanie tytułów osi
         fig.update_layout(
             title=f'{title}',
             xaxis_title=f'{x_title}',
@@ -662,12 +671,10 @@ class CAST:
         klucze = list(sorted(blzprog.keys()))
         wartosci = list(blzprog.values())
 
-        # Tworzenie wykresu
         fig = go.Figure()
 
         fig.add_trace(go.Scatter(x=klucze, y=wartosci, mode='lines+markers', name='Wartości'))
 
-        # Dodanie tytułów osi
         fig.update_layout(
             title=f'{title}',
             xaxis_title=f'{x_title}',
@@ -693,12 +700,10 @@ class CAST:
         klucze = list(sorted(raprog.keys()))
         wartosci = list(raprog.values())
 
-        # Tworzenie wykresu
         fig = go.Figure()
 
         fig.add_trace(go.Scatter(x=klucze, y=wartosci, mode='lines+markers', name='Wartości'))
 
-        # Dodanie tytułów osi
         fig.update_layout(
             title=f'{title}',
             xaxis_title=f'{x_title}',
@@ -728,12 +733,10 @@ class CAST:
 
         if type=='line':
 
-            # Tworzenie wykresu
             fig = go.Figure()
 
             fig.add_trace(go.Scatter(x=klucze, y=wartosci, mode='lines+markers', name='Wartości'))
 
-            # Dodanie tytułów osi
             fig.update_layout(
                 title=f'{title}',
                 xaxis_title=f'{x_title}',
@@ -748,7 +751,6 @@ class CAST:
 
             fig.add_trace(go.Bar(x=klucze, y=wartosci))
 
-            # Dodanie tytułów osi
             fig.update_layout(
                 title=f'{title}',
                 xaxis_title=f'{x_title}',
@@ -987,7 +989,7 @@ class CAST:
             for game, values in d.items():
 
                 st.header(game)
-                num_columns = 3  # Liczba kolumn w rzędzie
+                num_columns = 3 
                 for i in range(0, len(values), num_columns):
                     cols = st.columns(num_columns)
                     for j in range(num_columns):
@@ -1059,7 +1061,7 @@ class CAST:
 
 
 # borrowed this func from my other project chesstools. feel free to have a look if ur looking for more heatmap/ board visualization related plots
-    def heatmap1(self,counter, plot_colorscale='plasma', title='Moves heatmap', plot_showscale=False):
+    def __heatmap1(self,counter, plot_colorscale='plasma', title='Moves heatmap', plot_showscale=False):
         '''
         Generates a heatmap visualisation of the squares where the moves were made.
 
@@ -1124,7 +1126,7 @@ class CAST:
 
         rm = self.ca.rook_moves(only_player_games=opg)
 
-        CAST.heatmap1(self,rm,plot_colorscale, title, plot_showscale) # funfact - i forgot to add self as 1 param and it took me 30 mins to figure out 
+        CAST.__heatmap1(self,rm,plot_colorscale, title, plot_showscale) # funfact - i forgot to add self as 1 param and it took me 30 mins to figure out 
                                                                     # what's wrong. by this time i had rewritten both this func and heatmap1 ;)
 
 
@@ -1139,7 +1141,7 @@ class CAST:
         '''
         qm = self.ca.queen_moves(only_player_games=opg)
 
-        CAST.heatmap1(self,qm,plot_colorscale, title, plot_showscale)
+        CAST.__heatmap1(self,qm,plot_colorscale, title, plot_showscale)
 
 
 
@@ -1156,7 +1158,7 @@ class CAST:
         - opg (bool): Whether to show only the player's games. Default is False.
         '''
         bm = self.ca.bishop_moves(only_player_games=opg)
-        CAST.heatmap1(self,bm,plot_colorscale, title, plot_showscale)
+        CAST.__heatmap1(self,bm,plot_colorscale, title, plot_showscale)
 
     def knight_moves(self, plot_colorscale='Viridis', title='Knight moves heatmap', plot_showscale=True, opg=False):
         '''
@@ -1170,7 +1172,7 @@ class CAST:
         '''
         km = self.ca.knight_moves(only_player_games=opg)
 
-        CAST.heatmap1(self,km,plot_colorscale, title, plot_showscale)
+        CAST.__heatmap1(self,km,plot_colorscale, title, plot_showscale)
 
     def king_moves(self, plot_colorscale='Viridis', title='King moves heatmap', plot_showscale=True, opg=False):
         '''
@@ -1185,7 +1187,7 @@ class CAST:
 
         km = self.ca.king_moves(only_player_games=opg)
 
-        CAST.heatmap1(self,km,plot_colorscale, title, plot_showscale)
+        CAST.__heatmap1(self,km,plot_colorscale, title, plot_showscale)
 
 
 
@@ -1202,7 +1204,7 @@ class CAST:
 
         spc = self.ca.squares_with_Pawncaptures(only_player_games=opg)
 
-        CAST.heatmap1(self,spc,plot_colorscale, title, plot_showscale)
+        CAST.__heatmap1(self,spc,plot_colorscale, title, plot_showscale)
 
     def squares_knight_captures(self, plot_colorscale='Viridis', title='Squares with knight captures heatmap', plot_showscale=True, opg=False):
         '''
@@ -1216,7 +1218,7 @@ class CAST:
         '''
         skc = self.ca.squares_with_Knightcaptures(only_player_games=opg)
 
-        CAST.heatmap1(self,skc,plot_colorscale, title, plot_showscale)
+        CAST.__heatmap1(self,skc,plot_colorscale, title, plot_showscale)
 
     def squares_bishop_captures(self, plot_colorscale='Viridis', title='Squares with bishop captures heatmap', plot_showscale=True, opg=False):
         '''
@@ -1231,7 +1233,7 @@ class CAST:
 
         sbc = self.ca.squares_with_Bishopcaptures(only_player_games=opg)
 
-        CAST.heatmap1(self,sbc,plot_colorscale, title, plot_showscale)
+        CAST.__heatmap1(self,sbc,plot_colorscale, title, plot_showscale)
 
     def squares_rook_captures(self, plot_colorscale='Viridis', title='Squares with rook captures heatmap', plot_showscale=True, opg=False):
         '''
@@ -1246,7 +1248,7 @@ class CAST:
 
         src = self.ca.squares_with_Rookcaptures(only_player_moves=opg)
 
-        CAST.heatmap1(self,src,plot_colorscale, title, plot_showscale)
+        CAST.__heatmap1(self,src,plot_colorscale, title, plot_showscale)
 
     def squares_queen_captures(self, plot_colorscale='Viridis', title='Squares with queen captures heatmap', plot_showscale=True, opg=False):
         '''
@@ -1261,7 +1263,7 @@ class CAST:
 
         sqc = self.ca.squares_with_Queencaptures(only_player_games=opg)
 
-        CAST.heatmap1(self,sqc,plot_colorscale, title, plot_showscale)
+        CAST.__heatmap1(self,sqc,plot_colorscale, title, plot_showscale)
 
     def squares_king_captures(self, plot_colorscale='plasma', title='Squares with king captures heatmap', plot_showscale=True, opg=False):
         '''
@@ -1276,7 +1278,7 @@ class CAST:
 
         skc = self.ca.squares_with_Kingcaptures(only_player_games=opg)
 
-        CAST.heatmap1(self,skc, plot_colorscale, title, plot_showscale)    
+        CAST.__heatmap1(self,skc, plot_colorscale, title, plot_showscale)    
 
     def squares_with_mates(self, plot_colorscale='plasma',title='Squares with checkmates',plot_showscale=True,opg=False):
         '''
@@ -1291,7 +1293,7 @@ class CAST:
 
         swm = self.ca.squares_with_mates(only_player_games=opg)
 
-        CAST.heatmap1(self,swm, plot_colorscale, title, plot_showscale)
+        CAST.__heatmap1(self,swm, plot_colorscale, title, plot_showscale)
 
     def squares_with_checks(self, plot_colorscale='plasma',title='Squares with checks',plot_showscale=True,opg=False):
         '''
@@ -1305,5 +1307,6 @@ class CAST:
         '''
 
         swc = self.ca.squares_with_checks(only_player_games=opg)
-        CAST.heatmap1(self,swc, plot_colorscale, title, plot_showscale)
+        CAST.__heatmap1(self,swc, plot_colorscale, title, plot_showscale)
+
 
