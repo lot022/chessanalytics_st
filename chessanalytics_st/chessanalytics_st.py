@@ -142,8 +142,8 @@ class CAST:
         st.plotly_chart(fig)
 
 
-    def WDL_part(self, type : str = 'pie', colors : list = ['green', 'gray', 'red'], title : str ='Win/Draw/Loss stats by opening', xaxis_name:str='Opening', 
-                 yaxis_name : str ='Number of games'):
+    def WDL_part(self, type : str = 'pie', colors : list = ['green', 'gray', 'red'], title : str ='Win/Draw/Loss stats by part of the day', 
+                 xaxis_name:str='Opening', yaxis_name : str ='Number of games'):
         '''
         Generates a plot showing the win, draw, and loss statistics by part of the day.
 
@@ -1308,5 +1308,4 @@ class CAST:
 
         swc = self.ca.squares_with_checks(only_player_games=opg)
         CAST.__heatmap1(self,swc, plot_colorscale, title, plot_showscale)
-
 
