@@ -2,7 +2,11 @@
 
 Graphical representation of functions from chessanalytics designed for Streamlit apps.
 
-# NOTE.
+# <span style="color:red">WARNING</span>
+
+<span style="color:lightblue">From now on, chessanalytics-st will be an integrated part of chessanalytics library [https://github.com/lot022/chessanalytics]. It means that till I don't make a integrated, new documentation you can freely use documentation below as it is up to date. With the end on july, this repo will be closed and only way to use chessanalytics-st will be by using chessanalytics.</span>
+
+# NOTE
 
 Not all functions from chessanalytics could be presented in graphical way. Functions returning single integer or two-element list do not have huge potential 
 of graphical representation. That is why the two libraries may vary a little - chessanalytics_st does not have all functions from chessanalytics, but has some that chessanalytics does not have. This library strictly focuses on streamlit and uses 'st.' functions for plotting, representing data and so on. 
